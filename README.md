@@ -2,6 +2,10 @@
 
 A nodejs stream that emits data in nal units
 
+much faster than https://github.com/samcday/node-stream-splitter
+.split() is very slow and uses alot of cpu, used .indexOf
+just as fast if you implemented in C because nodejs indexOf uses calls native code.
+
 # example code from test.js
 
 ```
