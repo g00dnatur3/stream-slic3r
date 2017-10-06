@@ -6,7 +6,7 @@ much faster than https://github.com/samcday/node-stream-splitter
 
 .split is very slow and uses alot of cpu, 
 
-using .indexOf
+using .indexOf instead
 
 just as fast if you implemented in C because nodejs indexOf uses calls native code.
 
