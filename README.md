@@ -1,7 +1,8 @@
 # nal-stream
+
 A nodejs stream that emits data in nal units
 
-# Example code taken from test.js
+# example code from test.js
 
 ```
 const NalStream = require('./index.js');
