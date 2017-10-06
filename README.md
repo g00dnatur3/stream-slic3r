@@ -4,7 +4,7 @@ A nodejs stream that emits data in nal units
 
 much faster than https://github.com/samcday/node-stream-splitter
 
-.split() is very slow and uses alot of cpu, 
+.split is very slow and uses alot of cpu, 
 
 using .indexOf
 
