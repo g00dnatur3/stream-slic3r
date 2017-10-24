@@ -1,0 +1,19 @@
+{
+  "name": "stream-slicer",
+  "version": "1.0.0",
+  "description": "A nodejs stream slicer that emits data in slice units.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/g00dnatur3/stream-slicer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/g00dnatur3/stream-slicer/issues"
+  },
+  "homepage": "https://github.com/g00dnatur3/stream-slicer#readme"
+}

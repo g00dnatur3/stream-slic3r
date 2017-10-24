@@ -1,6 +1,6 @@
 # stream-slicer
 
-A nodejs stream slicer that emits data in slice units.
+A nodejs stream slicer that emits data in sliced units.
 
 much faster than https://github.com/samcday/node-stream-splitter
 

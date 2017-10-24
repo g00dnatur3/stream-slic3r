@@ -1,13 +1,41 @@
 const { Transform } = require('stream');
 
-const nalUnitDelimeter = new Buffer([0,0,0,1]);
+Object.getType = (function(global) {
+	const cache = {};
+	return function getType(obj) {
+    	var key;
+    	return obj === null ? 'null' // null
+        	: obj === global ? 'global' // window in browser or global in nodejs
+        	: (key = typeof obj) !== 'object' ? key // basic: string, boolean, number, undefined, function
+        	: obj.nodeType ? 'object' // DOM element
+        	: cache[key = Object.prototype.toString.call(obj)] // cached. date, regexp, error, object, array, math
+        	|| (cache[key] = key.slice(8, -1).toLowerCase()); // get XXXX from [object XXXX], and cache it
+	};
+}(this));
 
+var delimeter = null;
 var buf = null;
 
-module.exports = class NalStream extends Transform {
+module.exports = class StreamSlicer extends Transform {
+	constructor(delim, enc) {
+		super();
+		if (!delim) {
+			console.log('[stream-slicer] - err: you must specify a delimeter as string, buffer, or array');
+		} else {
+			if (Object.getType(delim) == 'string') {
+				delimeter = Buffer.from(delim, enc);
+			}
+			if (Object.getType(delim) == 'array') {
+				delimeter = Buffer.from(delim);
+			}
+			if (Object.getType(delim) == 'uint8array') {
+				delimeter = delim;
+			}
+		}
+	}
 	_transform(data, encoding, callback) {
 		var prevIndex = -1;
-		var index = data.indexOf(nalUnitDelimeter);
+		var index = data.indexOf(delimeter);
 		if (buf != null) {
 			if (index == 0) {
 				this.push(buf);
@@ -19,7 +47,7 @@ module.exports = class NalStream extends Transform {
 		}
 		while (index != -1) {
 			prevIndex = index;
-			index = data.indexOf(nalUnitDelimeter, index+1);
+			index = data.indexOf(delimeter, index+1);
 			if (prevIndex != -1 && index != -1) {
 				const _buf = data.slice(prevIndex, index);
 				if (_buf.length > 0) this.push(_buf);
@@ -40,5 +68,11 @@ module.exports = class NalStream extends Transform {
 			}
 		}
 		callback();
+	}
+	_flush(callback) {
+		if (buf != null) {
+			this.push(buf);
+			buf = null;
+		}
 	}
 }
