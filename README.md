@@ -1,6 +1,6 @@
-# nal-stream
+# stream-slicer
 
-A nodejs stream that emits data in nal units
+A nodejs stream slicer that emits data in slice units.
 
 much faster than https://github.com/samcday/node-stream-splitter
 
