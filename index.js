@@ -13,8 +13,8 @@ Object.getType = (function(global) {
 	};
 }(this));
 
-var delimeter = null;
-var buf = null;
+//var delimeter = null;
+//var buf = null;
 
 module.exports = class StreamSlicer extends Transform {
 	constructor(delim, enc) {
@@ -23,56 +23,57 @@ module.exports = class StreamSlicer extends Transform {
 			console.log('[stream-slicer] - err: you must specify a delimeter as string, buffer, or array');
 		} else {
 			if (Object.getType(delim) == 'string') {
-				delimeter = Buffer.from(delim, enc);
+				this._delimeter = Buffer.from(delim, enc);
 			}
 			if (Object.getType(delim) == 'array') {
-				delimeter = Buffer.from(delim);
+				this._delimeter = Buffer.from(delim);
 			}
 			if (Object.getType(delim) == 'uint8array') {
-				delimeter = delim;
+				this._delimeter = delim;
 			}
+			this._buf = null;
 		}
 	}
 	_transform(data, encoding, callback) {
 		var prevIndex = -1;
-		var index = data.indexOf(delimeter);
-		if (buf != null) {
+		var index = data.indexOf(this._delimeter);
+		if (this._buf != null) {
 			if (index == 0) {
-				this.push(buf);
-				buf = null;
+				this.push(this._buf);
+				this._buf = null;
 			} else if (index > 0) {
-				this.push(Buffer.concat([buf, data.slice(0, index)], index+buf.length));
-				buf = null;
+				this.push(Buffer.concat([this._buf, data.slice(0, index)], index+this._buf.length));
+				this._buf = null;
 			}
 		}
 		while (index != -1) {
 			prevIndex = index;
-			index = data.indexOf(delimeter, index+1);
+			index = data.indexOf(this._delimeter, index+1);
 			if (prevIndex != -1 && index != -1) {
 				const _buf = data.slice(prevIndex, index);
 				if (_buf.length > 0) this.push(_buf);
 			}
 		}
 		if (prevIndex == -1) {
-			if (buf) {
-				buf = Buffer.concat([buf, data], buf.length+data.length);
+			if (this._buf) {
+				this._buf = Buffer.concat([this._buf, data], this._buf.length+data.length);
 			} else {
-				buf = data;
+				this._buf = data;
 			}
 		} else {
-			if (buf) {
+			if (this._buf) {
 				const buf2 = data.slice(prevIndex); 
-				buf = Buffer.concat([buf, buf2], buf.length+buf2.length);
+				this._buf = Buffer.concat([this._buf, buf2], this._buf.length+buf2.length);
 			} else {
-				buf = data.slice(prevIndex);
+				this._buf = data.slice(prevIndex);
 			}
 		}
 		callback();
 	}
 	_flush(callback) {
-		if (buf != null) {
-			this.push(buf);
-			buf = null;
+		if (this._buf != null) {
+			this.push(this._buf);
+			this._buf = null;
 		}
 	}
 }
