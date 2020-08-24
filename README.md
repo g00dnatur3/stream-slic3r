@@ -1,4 +1,4 @@
-# stream-slicer
+# stream-slic3r
 
 A nodejs stream slicer that emits data in sliced units.
 
@@ -7,7 +7,7 @@ much faster than https://github.com/samcday/node-stream-splitter
 # example code from test.js
 
 ```
-const StreamSlicer = require('./index.js');
+const StreamSlicer = require('stream-slic3r');
 const assert = require('assert');
 
 // example string slicer
