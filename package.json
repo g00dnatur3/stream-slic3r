@@ -1,5 +1,5 @@
 {
-  "name": "stream-slicer",
+  "name": "stream-slic3r",
   "version": "1.0.0",
   "description": "A nodejs stream slicer that emits data in slice units.",
   "main": "index.js",
