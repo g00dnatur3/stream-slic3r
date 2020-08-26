@@ -75,5 +75,6 @@ module.exports = class StreamSlicer extends Transform {
 			this.push(this._buf);
 			this._buf = null;
 		}
+		callback();
 	}
 }
