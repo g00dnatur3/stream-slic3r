@@ -1,4 +1,5 @@
 const { Transform } = require('stream');
+const Buffer = require('buffer/').Buffer
 
 Object.getType = (function(global) {
 	const cache = {};
@@ -12,9 +13,6 @@ Object.getType = (function(global) {
         	|| (cache[key] = key.slice(8, -1).toLowerCase()); // get XXXX from [object XXXX], and cache it
 	};
 }(this));
-
-//var delimeter = null;
-//var buf = null;
 
 module.exports = class StreamSlicer extends Transform {
 	constructor(delim, enc) {

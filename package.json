@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/g00dnatur3/stream-slicer/issues"
   },
-  "homepage": "https://github.com/g00dnatur3/stream-slicer#readme"
+  "homepage": "https://github.com/g00dnatur3/stream-slicer#readme",
+  "dependencies": {
+    "buffer": "^6.0.3"
+  }
 }
